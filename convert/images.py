@@ -30,6 +30,5 @@ def create_spread(right_image, left_image):
     return image_io.getvalue()
 
 
-def open_image(zipfile, zipinfo):
-    imageb = zipfile.read(zipinfo)
+def open_image(imageb):
     return Image.open(BytesIO(imageb))
