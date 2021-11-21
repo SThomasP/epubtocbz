@@ -3,7 +3,7 @@ from zipfile import ZipFile
 from sys import stdout
 from progress.bar import PixelBar
 
-from convert import metadata, images
+from epubtocbz.convert import metadata, images
 
 FORMAT = 'page_{:003}.jpg'
 

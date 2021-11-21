@@ -1,8 +1,9 @@
 from xml.etree import ElementTree
 
 ns = {
-    "opf" : "http://www.idpf.org/2007/opf"
+    "opf": "http://www.idpf.org/2007/opf"
 }
+
 
 def get_meta_xml(xml_content):
     return ElementTree.fromstring(xml_content)
