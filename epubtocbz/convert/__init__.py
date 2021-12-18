@@ -8,6 +8,13 @@ from epubtocbz.convert import metadata, images
 FORMAT = 'page_{:003}.jpg'
 
 
+class Bar(PixelBar):
+    check_tty = False
+    file = stdout
+    # Braille pattern dots-0, means bar stays same width even if font isn't monospaced
+    empty_fill = '⠀'
+
+
 def get_pages(zipfile, opf_file):
     page_names = metadata.get_pages(opf_file)
     pages = [zipfile.getinfo(x) for x in page_names]
@@ -20,13 +27,15 @@ def process_epub(epub, cbz, options):
         opf_file = metadata.get_meta_xml(epub_zip.read("content.opf").decode("utf-8"))
         pages = get_pages(epub_zip, opf_file)
         with ZipFile(cbz, "w") as cbz_zip:
-            bar = PixelBar(book_name, max=len(pages), check_tty=False, file=stdout)
+            bar = Bar(book_name, max=len(pages))
             write_image(cbz_zip, epub_zip.read(pages[0]), 0)
             bar.next()
             if options['spreads']:
-                process_spreads(epub_zip, cbz_zip, pages[1::], 1, bar, is_manga(options, opf_file))
+                generator = process_spreads(epub_zip, cbz_zip, pages[1::], 1, is_manga(options, opf_file))
             else:
-                process_singles(epub_zip, cbz_zip, pages[1::], bar)
+                generator = process_singles(epub_zip, cbz_zip, pages[1::])
+            for i in generator:
+                bar.next(i)
             bar.finish()
 
 
@@ -36,13 +45,13 @@ def is_manga(options, opf_file):
     return bool(options['manga'])
 
 
-def process_singles(epub_zip, cbz_zip, pages, progress):
+def process_singles(epub_zip, cbz_zip, pages):
     for i in range(len(pages)):
         write_image(cbz_zip, epub_zip.read(pages[i]), i + 1)
-        progress.next()
+        yield 1
 
 
-def process_spreads(epub_zip, cbz_zip, pages, start, progress, manga):
+def process_spreads(epub_zip, cbz_zip, pages, start, manga):
     page_count = len(pages)
     page = start - 1
     i = 0
@@ -50,15 +59,13 @@ def process_spreads(epub_zip, cbz_zip, pages, start, progress, manga):
         page += 1
         if i == page_count - 1:
             write_image(cbz_zip, epub_zip.read(pages[i]), page)
-            progress.next()
-            i += 1
+            up = 1
         else:
             image = images.open_image(epub_zip.read(pages[i]))
             iw, ih = image.size
             if iw > ih:
                 write_image(cbz_zip, epub_zip.read(pages[i]), page)
-                progress.next()
-                i += 1
+                up = 1
             else:
                 if manga:
                     right = image
@@ -68,8 +75,9 @@ def process_spreads(epub_zip, cbz_zip, pages, start, progress, manga):
                     right = images.open_image(epub_zip.read(pages[i + 1]))
                 spread = images.create_spread(right, left)
                 write_image(cbz_zip, spread, page)
-                progress.next(2)
-                i += 2
+                up = 2
+        i += up
+        yield up
         gc.collect()
 
 
