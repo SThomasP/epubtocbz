@@ -1,6 +1,7 @@
 import gc
 from zipfile import ZipFile
 from sys import stdout
+from os import path
 from progress.bar import PixelBar
 
 from epubtocbz.convert import metadata, images
@@ -15,17 +16,24 @@ class Bar(PixelBar):
     empty_fill = '⠀'
 
 
-def get_pages(zipfile, opf_file):
+def get_pages(zipfile, opf_file, filename):
+    root = path.dirname(filename)
     page_names = metadata.get_pages(opf_file)
-    pages = [zipfile.getinfo(x) for x in page_names]
+    pages = [zipfile.getinfo(path.join(root, x)) for x in page_names]
     return pages
+
+
+def find_opf_file(epub_zip):
+    container_xml = metadata.get_meta_xml(epub_zip.read("META-INF/container.xml").decode('utf-8'))
+    return metadata.get_opf_location(container_xml)
 
 
 def process_epub(epub, cbz, options):
     book_name = epub.stem
     with ZipFile(epub, 'r') as epub_zip:
-        opf_file = metadata.get_meta_xml(epub_zip.read("content.opf").decode("utf-8"))
-        pages = get_pages(epub_zip, opf_file)
+        opf_filepath = find_opf_file(epub_zip)
+        opf_file = metadata.get_meta_xml(epub_zip.read(opf_filepath).decode("utf-8"))
+        pages = get_pages(epub_zip, opf_file, opf_filepath)
         with ZipFile(cbz, "w") as cbz_zip:
             bar = Bar(book_name, max=len(pages))
             write_image(cbz_zip, epub_zip.read(pages[0]), 0)
