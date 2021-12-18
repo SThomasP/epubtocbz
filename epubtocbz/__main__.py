@@ -9,6 +9,8 @@ def run(args):
         'manga': args['manga']
     }
     for epub, cbz in get_epub_and_cbz(args['from'], args['to'], args['overwrite']):
+        # CBZ directory might not exist
+        cbz.parent.mkdir(parents=True, exist_ok=True)
         process_epub(epub, cbz, options)
 
 
