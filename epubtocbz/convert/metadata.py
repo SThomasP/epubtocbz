@@ -26,3 +26,4 @@ def is_manga(meta_xml):
     reading_direction = meta_xml.find("./opf:metadata/opf:meta[@name='primary-writing-mode']", ns)
     if reading_direction is not None:
         return reading_direction.attrib['content'].endswith("rl")
+    raise RuntimeError("Cannot determine reading direction from metadata, please specify using commandline arguments")
