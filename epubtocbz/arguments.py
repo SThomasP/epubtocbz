@@ -27,12 +27,12 @@ parser.add_argument("--pages", dest="spreads", const=False, nargs="?", help='''
 turns off spread merging.
 ''')
 
-parser.add_argument("-rtl", "--manga", dest="manga", const=True,  nargs="?", default=None, help='''
+parser.add_argument("-rtl", "--manga", dest="manga", const=True, nargs="?", default=None, help='''
 Marks this book or books as having an RTL reading direction, and will merge spreads appropriately. 
 By default the program will try and find this from the metadata
 ''')
 
-parser.add_argument("-ltr", "--comics", dest="manga", const=False,  nargs="?", help='''
+parser.add_argument("-ltr", "--comics", dest="manga", const=False, nargs="?", help='''
 Marks this book or books as having an LTR reading direction, and will merge spreads appropriately.
 By default the program will try and find this from the metadata
 ''')

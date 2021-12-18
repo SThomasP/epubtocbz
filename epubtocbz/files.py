@@ -1,5 +1,3 @@
-
-
 def fromdir_and_todir(frompath, topath):
     def process(fromfile):
         relative = fromfile.relative_to(frompath).with_suffix('.cbz')
