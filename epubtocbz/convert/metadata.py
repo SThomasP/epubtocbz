@@ -23,7 +23,11 @@ def get_pages(meta_xml):
 
 
 def is_manga(meta_xml):
-    reading_direction = meta_xml.find("./opf:metadata/opf:meta[@name='primary-writing-mode']", ns)
-    if reading_direction is not None:
-        return reading_direction.attrib['content'].endswith("rl")
+    spine = meta_xml.find("./opf:spine", ns)
+    if spine is not None and 'page-progression-direction' in spine.attrib:
+        ppd = spine.attrib['page-progression-direction']
+        if ppd == "rtl":
+            return True
+        elif ppd == "ltr":
+            return False
     raise RuntimeError("Cannot determine reading direction from metadata, please specify using commandline arguments")

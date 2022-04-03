@@ -30,16 +30,19 @@ def find_opf_file(epub_zip):
 
 def process_epub(epub, cbz, options):
     book_name = epub.stem
+    is_rtl = None
     with ZipFile(epub, 'r') as epub_zip:
         opf_filepath = find_opf_file(epub_zip)
         opf_file = metadata.get_meta_xml(epub_zip.read(opf_filepath).decode("utf-8"))
         pages = get_pages(epub_zip, opf_file, opf_filepath)
+        if options['spreads']:
+            is_rtl = is_manga(options, opf_file)
         with ZipFile(cbz, "w") as cbz_zip:
             bar = Bar(book_name, max=len(pages))
             write_image(cbz_zip, epub_zip.read(pages[0]), 0)
             bar.next()
             if options['spreads']:
-                generator = process_spreads(epub_zip, cbz_zip, pages[1::], 1, is_manga(options, opf_file))
+                generator = process_spreads(epub_zip, cbz_zip, pages[1::], 1, is_rtl)
             else:
                 generator = process_singles(epub_zip, cbz_zip, pages[1::])
             for i in generator:
