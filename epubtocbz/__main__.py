@@ -1,6 +1,6 @@
 from epubtocbz.arguments import parser
-from epubtocbz.files import get_epub_and_cbz
 from epubtocbz.convert import process_epub
+from epubtocbz.files import get_epub_and_cbz
 
 
 def run(args):

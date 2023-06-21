@@ -1,7 +1,7 @@
-from enum import Enum
 from os import path
-from .model import Position, ReadingDirection
+
 from . import container, opf, xhtml
+from .model import Position, ReadingDirection
 
 
 def get_images(spine_contents: tuple, opf_filename: str, epub_file):
@@ -35,6 +35,7 @@ def find_spreads(images, spread_function, can_spread):
 def make_can_spread(current_position, next_position):
     def can_spread(images, i):
         return images[i][1] == current_position and i < len(images) - 1 and images[i + 1][1] == next_position
+
     return can_spread
 
 
@@ -42,10 +43,12 @@ def get_direction_functions(reading_direction):
     if reading_direction == ReadingDirection.RTL:
         def make_spread(images, i):
             return images[i + 1][0], images[i][0]
+
         can_spread = make_can_spread(Position.RIGHT, Position.LEFT)
     elif reading_direction == ReadingDirection.LTR:
         def make_spread(images, i):
             return images[i][0], images[i + 1][0]
+
         can_spread = make_can_spread(Position.LEFT, Position.RIGHT)
     else:
         def make_spread(images, i):

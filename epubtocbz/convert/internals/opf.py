@@ -1,4 +1,5 @@
 from xml.etree import ElementTree
+
 from .model import ReadingDirection, Position
 
 OPF_NS = {

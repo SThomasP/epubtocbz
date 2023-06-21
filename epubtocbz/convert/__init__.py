@@ -1,6 +1,7 @@
 import gc
-from zipfile import ZipFile
 from sys import stdout
+from zipfile import ZipFile
+
 from progress.bar import PixelBar
 
 from epubtocbz.convert import internals, images
