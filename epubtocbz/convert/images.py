@@ -13,7 +13,9 @@ def scale(right_image, left_image):
         return right_image, left_image
 
 
-def create_spread(right_image, left_image):
+def create_spread(right, left):
+    right_image = open_image(right)
+    left_image = open_image(left)
     r_scaled, l_scaled = scale(right_image, left_image)
     rw, rh = r_scaled.size
     lw, lh = l_scaled.size
