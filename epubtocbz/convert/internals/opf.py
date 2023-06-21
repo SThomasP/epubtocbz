@@ -15,7 +15,7 @@ def get_position(p):
         return Position.LEFT
     elif p == "page-spread-right":
         return Position.RIGHT
-    return Position.NONE
+    return Position.UNKNOWN
 
 
 def get_spine_contents(opf_file):
@@ -44,5 +44,7 @@ def get_reading_direction(opf_file):
 def is_manga_amazon(meta_xml):
     reading_direction = meta_xml.find("./opf:metadata/opf:meta[@name='primary-writing-mode']", OPF_NS)
     if reading_direction is not None:
-        return reading_direction.attrib['content'].endswith("rl")
-    raise RuntimeError("Cannot determine reading direction from metadata, please specify using commandline arguments")
+        if reading_direction.attrib['content'].endswith("rl"):
+            return ReadingDirection.RTL
+        return ReadingDirection.LTR
+    return ReadingDirection.UNKNOWN

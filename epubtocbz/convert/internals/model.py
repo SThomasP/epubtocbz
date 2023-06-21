@@ -2,11 +2,12 @@ from enum import Enum
 
 
 class Position(Enum):
-    NONE = 1
+    UNKNOWN = 1
     LEFT = 2
     RIGHT = 3
 
 
 class ReadingDirection(Enum):
-    LTR = 1
-    RTL = 2
+    UNKNOWN = 1
+    LTR = 2
+    RTL = 3
