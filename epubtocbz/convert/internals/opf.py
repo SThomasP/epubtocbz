@@ -37,9 +37,7 @@ def get_reading_direction(opf_file):
             return ReadingDirection.RTL
         elif ppd == "ltr":
             return ReadingDirection.LTR
-    if is_manga_amazon(opf_file):
-        return ReadingDirection.RTL
-    return ReadingDirection.LTR
+    return is_manga_amazon(opf_file)
 
 
 def is_manga_amazon(meta_xml):
