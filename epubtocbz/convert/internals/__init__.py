@@ -51,10 +51,10 @@ def get_direction_functions(reading_direction):
 
         can_spread = make_can_spread(Position.LEFT, Position.RIGHT)
     else:
-        def make_spread(images, i):
+        def make_spread(_images, _i):
             pass
 
-        def can_spread(images, i):
+        def can_spread(_images, _i):
             return False
     return make_spread, can_spread
 
