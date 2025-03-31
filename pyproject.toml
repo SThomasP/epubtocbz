@@ -1,0 +1,25 @@
+[project]
+name = "epubtocbz"
+version = "0.1.0"
+description = "Converter from EPUB to CBZ (change layout of zip file)"
+authors = [
+    {name = "Steffan", email = "git@steffanpadel.eu"},
+]
+dependencies = [
+    "pillow",
+    "tqdm",
+]
+requires-python = ">=3.12"
+readme = "README.md"
+
+
+[tool.pdm]
+distribution = false
+
+[[tool.pdm.source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dependency-groups]
+dev = []
