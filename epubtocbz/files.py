@@ -50,4 +50,4 @@ def get_epub_and_cbz(frompath, topath, overwrite):
         if (not t.exists()) or (t.exists() and overwrite):
             yield f, t
         else:
-            print("file {0} exists and overwrite not specified, ignoring {1}".format(t.name, f.name))
+            print(f"file {t.name} exists and overwrite not specified, ignoring {f.name}")

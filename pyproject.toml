@@ -12,6 +12,8 @@ dependencies = [
 requires-python = ">=3.12"
 readme = "README.md"
 
+[project.scripts]
+epubtocbz = "epubtocbz:main"
 
 [tool.pdm]
 distribution = false
