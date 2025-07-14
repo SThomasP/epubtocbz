@@ -1,9 +1,8 @@
 import gc
-from sys import stdout
 from zipfile import ZipFile
 
 from tqdm import tqdm
-from epubtocbz.convert import internals, images
+from . import internals, images
 
 FORMAT = 'page_{:003}.jpg'
 
