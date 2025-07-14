@@ -23,7 +23,7 @@ def find_files(frompath, topath):
             process = fromdir_and_todir(frompath, topath)
         else:
             raise RuntimeWarning("From is a directory, to must also be a directory or left blank")
-        for glob in frompath.rglob("*.epub"):
+        for glob in sorted(frompath.rglob("*.epub")):
             yield glob, process(glob)
 
     elif frompath.suffix == ".epub" and frompath.exists():

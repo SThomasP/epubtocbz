@@ -1,6 +1,6 @@
 [project]
 name = "epubtocbz"
-version = "0.2.0"
+version = "0.2.1"
 description = "Converter from EPUB to CBZ (change layout of zip file)"
 authors = [
     {name = "Steffan", email = "git@steffanpadel.eu"},
