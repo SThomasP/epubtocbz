@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 
 parser = ArgumentParser(description='''
@@ -18,11 +18,7 @@ parser.add_argument('-o', "--overwrite", nargs="?", const=True, default=False, h
 Enable overwriting of existing cbz files
 ''')
 
-parser.add_argument("--spreads", dest="spreads", nargs="?", const=True, default=True, help='''
+parser.add_argument("--spreads", action=BooleanOptionalAction, default=True, help='''
 This will attempt to analyse the pages in the epub and construct spreads based on the contents.
 On by default.
-''')
-
-parser.add_argument("--pages", dest="spreads", const=False, nargs="?", help='''
-turns off spread merging.
 ''')
